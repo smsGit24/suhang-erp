@@ -15,6 +15,12 @@ export default new Router({
   mode: 'history',
   routes: [
     {
+      path: '/',
+      name: 'Login',
+      component: Login,
+      meta: { title: '登录', layout: 'blank' }
+    },
+    {
       path: '/signin',
       name: 'Signin',
       component: Signin,
