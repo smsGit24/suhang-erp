@@ -26,7 +26,7 @@
           </Dropdown>
         </Header>
         <Content :style="{flex: 1, padding: '10px'}">
-          <router-view class="page"/>
+          <router-view style="background: #ffffff" class="page"/>
         </Content>
       </Layout>
     </Layout>

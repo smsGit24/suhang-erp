@@ -26,7 +26,7 @@ Vue.use(Vuex)
 router.beforeEach((to, from, next) => {
   LoadingBar.start()
   const token = Cookies.get('token')
-  to.name === 'Login' ? next() : token ? next() : location.href = '/login'
+  to.name === 'Login' || to.name === 'Signin' ? next() : token ? next() : location.href = '/login'
 })
 
 router.afterEach((to, from, next) => {

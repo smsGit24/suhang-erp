@@ -2,6 +2,7 @@
   <div class="add">
     <Button type="primary" style="width: 100%" @click="() => setVisible(true)">新增项目</Button>
     <Modal
+      width="640"
       v-model="visible"
       title="新增项目"
       :loading="loading"
@@ -10,25 +11,25 @@
         <FormItem class="one" label="产品名称" prop="name">
           <Input class="inner-form" v-model="addParams.name" placeholder="请输入产品名称" />
         </FormItem>
-        <FormItem class="three" label="最小投资金额" prop="minAmount">
-          <InputNumber class="inner-form" v-model="addParams.minAmount" :min="1" placeholder="请输入最小投资金额"></InputNumber>
+        <FormItem class="four" label="最小投资金额" prop="minAmount">
+          <Input class="inner-form" v-model="addParams.minAmount" :number="true" placeholder="请输入最小投资金额"/>
         </FormItem>
-        <FormItem class="three" label="最大投资金额" prop="maxAmount">
-          <InputNumber class="inner-form" v-model="addParams.maxAmount" :min="1" placeholder="请输入最大投资金额"></InputNumber>
+        <FormItem class="four" label="最大投资金额" prop="maxAmount">
+          <Input class="inner-form" v-model="addParams.maxAmount" :number="true" placeholder="请输入最大投资金额"/>
         </FormItem>
-        <FormItem class="three" label="产品金额" prop="amount" style="margin-right: 0;">
-          <InputNumber class="inner-form" v-model="addParams.amount" :min="1" placeholder="请输入产品金额"></InputNumber>
+        <FormItem class="four" label="产品金额" prop="amount">
+          <Input class="inner-form" v-model="addParams.amount" :number="true" placeholder="请输入产品金额"/>
         </FormItem>
-        <FormItem class="two" label="产品代码" prop="code">
-          <InputNumber class="inner-form" v-model="addParams.code" :min="1" placeholder="请输入产品代码"></InputNumber>
+        <FormItem class="four" label="产品利率（小数）" prop="rate">
+          <Input class="inner-form" v-model="addParams.rate" :number="true" placeholder="请输入产品利率"/>
         </FormItem>
-        <FormItem class="two" label="产品期限" prop="period">
-          <InputNumber class="inner-form" v-model="addParams.period" :min="1" placeholder="请输入产品期限"></InputNumber>
+        <FormItem class="three" label="产品代码" prop="code">
+          <Input class="inner-form" v-model="addParams.code" :number="true" placeholder="请输入产品代码"/>
         </FormItem>
-        <FormItem  class="two" label="产品利率" prop="rate">
-          <InputNumber class="inner-form" v-model="addParams.rate" :min="1" :step="0.01" placeholder="请输入产品利率"></InputNumber>
+        <FormItem class="three" label="产品期限（天）" prop="period">
+          <Input class="inner-form" v-model="addParams.period" :number="true" placeholder="请输入产品期限"/>
         </FormItem>
-        <FormItem class="two" label="还款来源" prop="repaymentSource">
+        <FormItem class="three" label="还款来源" prop="repaymentSource">
           <Input class="inner-form" v-model="addParams.repaymentSource" placeholder="请输入还款来源" />
         </FormItem>
         <FormItem class="one" label="借款用途" prop="loanUse">
@@ -55,13 +56,13 @@ export default {
       visible: false,
       loading: true,
       addParams: {
-        code: 1,
+        code: undefined,
         name: '',
-        minAmount: 1,
-        maxAmount: 1,
-        amount: 1,
-        period: 1,
-        rate: 1,
+        minAmount: undefined,
+        maxAmount: undefined,
+        amount: undefined,
+        period: undefined,
+        rate: undefined,
         description: '',
         loanUse: '',
         repaymentSource: '',
@@ -114,13 +115,13 @@ export default {
       this.visible = val
       this.loading = false
       this.addParams = {
-        code: 1,
+        code: undefined,
         name: '',
-        minAmount: 1,
-        maxAmount: 1,
-        amount: 1,
-        period: 1,
-        rate: 1,
+        minAmount: undefined,
+        maxAmount: undefined,
+        amount: undefined,
+        period: undefined,
+        rate: undefined,
         description: '',
         loanUse: '',
         repaymentSource: '',
@@ -166,6 +167,13 @@ export default {
   .three {
     width: calc(100% / 3 - 3px);
     margin-right: 0;
+  }
+  .four {
+    width: calc(100% / 4 - 4px);
+    margin-right: 0;
+  }
+  ::-webkit-input-placeholder {
+    font-size: 12px;
   }
 }
 </style>
