@@ -1,11 +1,11 @@
 <template lang="html">
   <div class="default">
     <Layout :style="{minHeight: '100vh'}">
-      <Sider ref="side" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed">
+      <Sider ref="side" hide-trigger collapsible :width="180" :collapsed-width="50" v-model="isCollapsed">
         <Menu :active-name="$route.name" theme="dark" width="auto" :class="menuitemClasses" @on-select="pageRouter">
           <MenuItem v-for="(item, index) in routes" :key="index" :name="item.name">
             <Icon :type="item.meta.type"></Icon>
-            {{item.meta.title}}
+            <span>{{item.meta.title}}</span>
           </MenuItem>
         </Menu>
       </Sider>
@@ -116,6 +116,9 @@ export default {
 .collapsed-menu span {
   width: 0px;
   transition: width 0.2s ease;
+}
+.collapsed-menu li {
+  padding: 10px;
 }
 .collapsed-menu i {
   transform: translateX(5px);
