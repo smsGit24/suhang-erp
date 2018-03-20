@@ -1,9 +1,21 @@
 <template>
   <div class="access">
     <Card v-for="(item, index) in userList" :key="index" :class="{last: (index + 1) % 4 === 0}">
-      <p slot="title">{{item.userName}}</p>
-      <div class="access-item">
-        <div class="access-name">管理员权限</div>
+      <p slot="title">id: {{item.id}}</p>
+      <div class="item">
+        <div class="item-name">手机号: </div>
+        <div class="item-value">{{item.mobile}}</div>
+      </div>
+      <div class="item">
+        <div class="item-name">注册时间: </div>
+        <div class="item-value">{{item.createOn}}</div>
+      </div>
+      <div class="item">
+        <div class="item-name">总金额: </div>
+        <div class="item-value">{{item.total_amount}}</div>
+      </div>
+      <div class="item">
+        <div class="item-name">管理员权限</div>
         <i-Switch v-model="item.access" @on-change="changeAccess" :true-value="1" :false-value="0">
           <span slot="open">开</span>
           <span slot="close">关</span>
@@ -14,7 +26,7 @@
 </template>
 
 <script>
-import { Card, Switch, Button } from 'iview'
+import { Card, Switch, Button, Table } from 'iview'
 import { mapState } from 'vuex'
 export default {
   components: {
@@ -56,9 +68,9 @@ export default {
     height: 300px;
     width: calc((100% - 30px) / 4);
     margin: 0 10px 10px 0;
-    .access-item {
+    .item {
       display: flex;
-      .access-name {
+      .item-name {
         flex: 1;
       }
     }

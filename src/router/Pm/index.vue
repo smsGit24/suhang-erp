@@ -1,73 +1,42 @@
 <template>
   <div class="pm">
     <Row :gutter="16" class="header">
-      <iCol :span="24" style="padding-bottom: 15px;">
-        <Row :gutter="10" style="padding-bottom: 10px;">
-          <iCol :span="3">
-            <Select v-model="filters.type" placeholder="请选择产品类型" clearable style="width:100%">
-              <Option v-for="item in typeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-            </Select>
-          </iCol>
-          <iCol :span="3">
-            <Input v-model="filters.code" placeholder="请输入产品代码" number style="width: 100%"/>
-          </iCol>
-          <iCol :span="3">
-            <Select v-model="filters.status" placeholder="请选择产品状态" clearable style="width:100%">
-              <Option v-for="item in statusList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-            </Select>
-          </iCol>
-          <iCol :span="3">
-            <Input v-model="filters.rate" placeholder="请输入产品利率" number style="width: 100%"/>
-          </iCol>
-          <iCol :span="3">
-            <Input v-model="filters.period" placeholder="请输入产品期限" number style="width: 100%"/>
-          </iCol>
-          <iCol :span="6">
-            <DatePicker v-model="filters.times" type="datetimerange" placement="bottom-end" placeholder="选择时间范围" style="width:100%"></DatePicker>
-          </iCol>
-          <iCol :span="3">
-            <Button type="primary" shape="circle" icon="ios-search" @click="searchProducts" style="width: 100%;">查询</Button>
-          </iCol>
-        </Row>
-        <Row :gutter="16">
-          <iCol :span="24">
-            <Add style="width: 100px; display: inline-block; margin-right: 10px;" @get="fetchProducts"/>
-          </iCol>
-        </Row>
+      <iCol :span="24" style="padding: 15px 20px;">
+        <Add style="display: inline-block; margin-right: 10px;" @get="fetchProducts"/>
+        <Button type="dashed" shape="circle" :loading="false" icon="ios-search" @click="() => showFilters = !showFilters">筛选</Button>
+        <transition name="filters">
+          <div v-if="showFilters" class="shadow">
+            <Input v-model="filters.code" placeholder="请输入产品代码" style="width: 120px" @on-keypress="searchProducts"/>
+            <Input v-model="filters.rate" placeholder="请输入产品利率" style="width: 120px" @on-keypress="searchProducts"/>
+            <Input v-model="filters.period" placeholder="请输入产品期限" style="width: 120px" @on-keypress="searchProducts"/>
+            <DatePicker v-model="filters.times" type="datetimerange" format="yyyy-MM-dd" placement="bottom-end" placeholder="选择时间范围" style="width: 320px" @on-change="fetchProducts"/>
+          </div>
+        </transition>
       </iCol>
     </Row>
     <Row :gutter="16" class="container">
       <iCol :span="24">
-        <Table :loading="loading" :columns="columns" :data="products" :height="scroll" no-data-text="暂时无产品！"/>
+        <Table :loading="loading" :columns="columns" :data="products.list" no-data-text="暂时无产品！"/>
       </iCol>
     </Row>
     <Row :gutter="16">
       <iCol :span="24" style="text-align: center; padding: 15px 0;">
-        <Page :total="40" show-elevator show-sizer show-total @on-change="pageChange" @on-page-size-change="sizeChange"></Page>
+        <Page :total="products.count" show-elevator show-sizer show-total @on-change="pageChange" @on-page-size-change="sizeChange"></Page>
       </iCol>
     </Row>
-    <router-view></router-view>
   </div>
 </template>
 
 <script>
 import {mapState} from 'vuex'
 import {Row, Col, Table, Button, Input, Select, Option, DatePicker, Page} from 'iview'
-import Add from './components/add.vue'
+import Add from '@/components/Add.vue'
 import opts from './colums'
 export default {
   components: {'iCol': Col, Row, Table, Button, Input, Add, Select, Option, DatePicker, Page},
   data () {
     return {
-      typeList: [
-        {value: 1, label: '默认产品'}
-      ],
-      statusList: [
-        {value: 1, label: '未审核'},
-        {value: 2, label: '已审核'},
-        {value: 3, label: '还款中'},
-        {value: 4, label: '已发布'}
-      ],
+      showFilters: false,
       filters: {
         code: null,
         type: 1,
@@ -77,7 +46,8 @@ export default {
         rate: null
       },
       columns: opts({
-        actionRender: this.actionRender
+        actionRender: this.actionRender,
+        filterRemote: this.filterRemote
       }),
       loading: true,
       start: 1,
@@ -110,24 +80,31 @@ export default {
         }, '删除')
       ])
     },
-    async searchProducts () {
-      await this.fetchProducts()
+    async searchProducts (ev) {
+      console.log(ev)
+      if (ev.key === 'Enter') await this.fetchProducts()
     },
     async fetchProducts () {
       const {filters, start, limit} = this
       const {code, type, status, period, rate, times} = filters
-      await this.$store.dispatch('products/getProducts', {
-        code, // int 产品代码
-        type, // int 产品类型
-        status, // int 产品状态
-        period, // int 产品期限
+      const res = {
+        code: code ? isNaN(Number(code)) ? null : Number(code) : null, // int 产品代码
+        type: type ? isNaN(Number(type)) ? null : Number(type) : null, // int 产品类型
+        status: status ? isNaN(Number(status)) ? null : Number(status) : null, // int 产品状态
+        period: period ? isNaN(Number(period)) ? null : Number(period) : null, // int 产品期限
         rate, // double 产品利率
         start,
         limit,
         beginTime: times[0], // date 开始时间
         endTime: times[1] // date 结束时间
-      })
+      }
+      console.log(res)
+      await this.$store.dispatch('products/getProducts', res)
       this.loading = false
+    },
+    async filterRemote (val, type) {
+      this.filters[type] = val
+      await this.fetchProducts()
     },
     async pageChange (start) {
       this.start = start
@@ -142,6 +119,7 @@ export default {
     },
     async auditProducts (id) {
       await this.$store.dispatch('products/auditProducts', { id })
+      await this.fetchProducts()
     },
     async deleteProducts (id) {
       this.$Modal.confirm({
@@ -165,10 +143,32 @@ export default {
 
 <style lang="less" scoped>
 .pm {
-  display: flex;
-  flex-direction: column;
-  .container {
-    flex: 1
+  // display: flex;
+  // flex-direction: column;
+  position: relative;
+  // .container {
+  //   flex: 1
+  // }
+  .shadow {
+    display: inline-block;
+    padding: 0 20px;
+    border-radius: 10px;
+  }
+  .filters-enter-active {
+    animation: filters-in .5s;
+  }
+  .filters-leave-active {
+    animation: filters-in .5s reverse;
+  }
+  @keyframes filters-in {
+    0% {
+      transform: scaleX(0);
+      transform-origin: 0 0;
+    }
+    100% {
+      transform: scaleX(1);
+      transform-origin: 0 0;
+    }
   }
 }
 </style>

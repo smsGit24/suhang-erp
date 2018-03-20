@@ -1,3 +1,4 @@
+import moment from 'moment'
 const user = {
   state: {
     signInResult: null,
@@ -50,7 +51,11 @@ const user = {
      */
     async getUsers (ctx, params) {
       const res = await ctx.dispatch('get', {url: '/users', params})
-      if (res) ctx.commit('user/setUsers', res)
+      const data = (res || []).map(item => ({
+        ...item,
+        createOn: moment(item.create_time).format('YYYY-MM-DD HH:mm')
+      }))
+      if (res) ctx.commit('user/setUsers', data)
     },
     /**
      * @method getUserDetail 获取用户详情接口

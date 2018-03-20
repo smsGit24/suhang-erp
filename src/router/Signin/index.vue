@@ -97,8 +97,8 @@ export default {
             this.$message.success('注册成功！')
             await this.logIn()
             if (this.logInResult) {
+              Cookies.set('id', name)
               Cookies.set('token', this.logInResult)
-              Cookies.set('userName', name)
               this.$router.push({name: 'Pm'})
             }
           } else {

@@ -88,7 +88,7 @@ export default {
           })
           if (this.logInResult) {
             this.$message.success('登录成功！')
-            Cookies.set('userName', name)
+            Cookies.set('id', name)
             Cookies.set('token', this.logInResult)
             this.$router.push({name: 'Pm'})
           } else this.$message.error('登录失败！')

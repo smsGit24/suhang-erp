@@ -8,6 +8,7 @@ const PmDetails = () => import('./PmDetails')
 const Access = () => import('./Access')
 const Dynamic = () => import('./Dynamic')
 const NewDynamic = () => import('./NewDynamic')
+const Records = () => import('./Records')
 
 Vue.use(Router)
 
@@ -37,8 +38,6 @@ export default new Router({
       name: 'User',
       component: User,
       meta: {
-        menu: 1,
-        type: 'person',
         title: '个人中心',
         breadcrumb: [
           {path: '/user', title: '个人中心'}
@@ -105,6 +104,19 @@ export default new Router({
         breadcrumb: [
           {path: '/dynamic', title: '新闻动态'},
           {path: '/newdynamic', title: '添加新闻'}
+        ]
+      }
+    },
+    {
+      path: '/records',
+      name: 'Records',
+      component: Records,
+      meta: {
+        menu: 5,
+        type: 'clipboard',
+        title: '投资记录',
+        breadcrumb: [
+          {path: '/Records', title: '投资记录'}
         ]
       }
     }

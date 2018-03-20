@@ -8,10 +8,10 @@ import router from './router'
 
 import Cookies from 'js-cookie'
 import { Modal, Message, LoadingBar } from 'iview'
+
 import './theme/index.less'
 
 import App from './App'
-
 Vue.prototype.$Modal = Modal
 Vue.prototype.$message = Message
 Vue.prototype.$message.config({

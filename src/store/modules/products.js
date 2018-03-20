@@ -11,11 +11,11 @@ const status = {
 const products = {
   state: {
     createProducts: null,
-    products: [],
+    products: {},
     delProducts: null,
     productDetails: null,
     auditProducts: null,
-    records: []
+    records: {}
   },
   mutations: {
     setCreateProducts (state, val) {
@@ -73,16 +73,19 @@ const products = {
      */
     async getProducts (ctx, params) {
       const res = await ctx.dispatch('get', {url: '/products', params})
-      const data = (res || []).map(item => ({
-        ...item,
-        beginTime: item.beginTime ? moment(item.beginTime).format('YYYY-MM-DD HH:mm') : '',
-        endTime: item.endTime ? moment(item.endTime).format('YYYY-MM-DD HH:mm') : '',
-        createTime: item.createTime ? moment(item.createTime).format('YYYY-MM-DD HH:mm') : '',
-        profileTime: item.profileTime ? moment(item.profileTime).format('YYYY-MM-DD HH:mm') : '',
-        updateTime: item.updateTime ? moment(item.updateTime).format('YYYY-MM-DD HH:mm') : '',
-        typeLable: types[item.type],
-        statusLable: status[item.status]
-      }))
+      const data = {
+        count: res.count,
+        list: (res.list || []).map(item => ({
+          ...item,
+          beginTime: item.beginTime ? moment(item.beginTime).format('YYYY-MM-DD HH:mm') : '',
+          endTime: item.endTime ? moment(item.endTime).format('YYYY-MM-DD HH:mm') : '',
+          createTime: item.createTime ? moment(item.createTime).format('YYYY-MM-DD HH:mm') : '',
+          profileTime: item.profileTime ? moment(item.profileTime).format('YYYY-MM-DD HH:mm') : '',
+          updateTime: item.updateTime ? moment(item.updateTime).format('YYYY-MM-DD HH:mm') : '',
+          typeLable: types[item.type],
+          statusLable: status[item.status]
+        }))
+      }
       ctx.commit('products/setProducts', data)
     },
     /**
@@ -171,8 +174,16 @@ const products = {
        }]
      */
     async getRecords (ctx, params) {
-      const res = await ctx.dispatch('get', {url: `/records`})
-      if (res === 'success') ctx.commit('products/setRecords', true)
+      const res = await ctx.dispatch('get', {url: `/records`, params})
+      const data = {
+        count: res.count,
+        list: (res.list || []).map(item => ({
+          ...item,
+          createOn: moment(item.create_time).format('YYYY-MM-DD HH:mm'),
+          statusLable: status[item.status]
+        }))
+      }
+      if (res) ctx.commit('products/setRecords', data)
       else ctx.commit('products/setRecords', false)
     }
   }

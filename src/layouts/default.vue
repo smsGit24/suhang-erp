@@ -10,23 +10,34 @@
         </Menu>
       </Sider>
       <Layout>
-        <Header :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)', padding: '0', display: 'flex'}">
-          <Icon @click.native="collapsedSider" :class="rotateIcon" type="navicon-round" size="24"></Icon>
-          <Breadcrumb :style="{flex: 1}">
+        <Header :style="{height: '42px', background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)', padding: '0', display: 'flex'}">
+          <div class="nav-btn" style="height: 100%; width: 42px; overflow: hidden;">
+            <Icon @click.native="collapsedSider" :class="rotateIcon" type="navicon" size="24" ></Icon>
+          </div>
+          <Breadcrumb :style="{flex: 1, lineHeight: '42px'}">
             <BreadcrumbItem>苏商</BreadcrumbItem>
             <BreadcrumbItem v-for="(item, index) in breadcrumb" :to="breadcrumbPath(index)" :key="index">
               {{item.title}}
             </BreadcrumbItem>
           </Breadcrumb>
-          <Dropdown trigger="click" placement="bottom-end" style="margin-right: 20px" @on-click="logout">
-            <Avatar class="avatar" src="https://i.loli.net/2017/08/21/599a521472424.jpg" size="large" />
+          <Dropdown class="default-ivu-dropdown" trigger="click" placement="bottom-end" style="margin-right: 20px" @on-click="logout">
+            <div class="user" style="height: 100%;">
+              <Avatar class="avatar" src="https://i.loli.net/2017/08/21/599a521472424.jpg" />
+              <div class="userName">
+                <span>{{id}}</span>
+                <Icon style="font-size: 12px;" type="chevron-down"></Icon>
+              </div>
+            </div>
             <DropdownMenu slot="list">
+              <DropdownItem name="user">个人中心</DropdownItem>
               <DropdownItem name="logout">退出登录</DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </Header>
         <Content :style="{flex: 1, padding: '10px'}">
-          <router-view style="background: #ffffff" class="page"/>
+          <transition name="bounce">
+            <router-view style="background: #ffffff; height: 100%;" class="page"/>
+          </transition>
         </Content>
       </Layout>
     </Layout>
@@ -41,7 +52,8 @@ export default {
   components: { Layout, Sider, Header, Content, Breadcrumb, BreadcrumbItem, Card, Menu, MenuItem, Icon, MenuGroup, Submenu, Dropdown, DropdownMenu, DropdownItem, Avatar },
   data () {
     return {
-      isCollapsed: false
+      isCollapsed: false,
+      id: Cookies.get('id')
     }
   },
   computed: {
@@ -77,6 +89,9 @@ export default {
         case 'logout':
           Cookies.set('token', '')
           this.$router.push({name: 'Login'})
+          break
+        case 'user':
+          this.$router.push({name: 'User'})
           break
         default:
           break
@@ -126,9 +141,14 @@ export default {
   vertical-align: middle;
   font-size: 22px;
 }
+.nav-btn {
+  line-height: 0;
+  padding: 9px;
+  margin-left: 6px;
+}
 .menu-icon{
-  width: 64px;
-  padding: 22px 0 0 22px;
+  // width: 64px;
+  // padding: 9px 0 0 24px;
   transition: all .3s;
 }
 .rotate-icon{
@@ -141,6 +161,44 @@ export default {
     height: 100%;
     .page {
       height: 100%;
+    }
+  }
+}
+.bounce-enter-active {
+  animation: bounce-in .2s;
+}
+.bounce-leave-active {
+  animation: bounce-in .2s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.default-ivu-dropdown {
+  .user {
+    display: flex;
+    .avatar {
+      margin-top: 5px;
+      margin-right: 4px;
+    }
+    .userName {
+      line-height: 42px;
+    }
+  }
+  .ivu-dropdown-rel {
+    height: 100%;
+    .ivu-avatar {
+      vertical-align: initial;
     }
   }
 }
