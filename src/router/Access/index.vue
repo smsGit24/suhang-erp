@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { Card, Switch, Button, Table } from 'iview'
+import { Card, Switch, Button } from 'iview'
 import { mapState } from 'vuex'
 export default {
   components: {

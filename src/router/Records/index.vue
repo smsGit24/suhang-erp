@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie'
 import {mapState} from 'vuex'
 import {Row, Col, Table, Button, Input, Select, Option, DatePicker, Page} from 'iview'
 import opts from './colums'
@@ -53,12 +52,12 @@ export default {
       }),
       loading: true,
       start: 1,
-      limit: 10,
+      limit: 10
     }
   },
   computed: {
     ...mapState({
-      records: state => state.products.records,
+      records: state => state.products.records
     })
   },
   methods: {
@@ -77,7 +76,7 @@ export default {
         startTime: times[0], // 否 date 开始日期
         endTime: times[1], // 否 date 结束日期
         start, // 是 int 开始页数
-        limit, // 是 int 页大小
+        limit // 是 int 页大小
       }
       console.log(res)
       await this.$store.dispatch('products/getRecords', res)
