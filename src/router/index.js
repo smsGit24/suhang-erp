@@ -76,9 +76,9 @@ export default new Router({
       meta: {
         menu: 3,
         type: 'ribbon-b',
-        title: '权限管理',
+        title: '用户列表',
         breadcrumb: [
-          {path: '/access', title: '权限管理'}
+          {path: '/access', title: '用户列表'}
         ]
       }
     },
