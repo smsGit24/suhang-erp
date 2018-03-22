@@ -25,7 +25,7 @@
     <div class="plane right">
       <div class="item">
         <div class="label">注册时间</div>
-        <div class="content">{{user.create_time}}</div>
+        <div class="content">{{user.createTime}}</div>
       </div>
       <div class="item">
         <div class="label">总金额</div>
@@ -41,7 +41,7 @@
       </div>
       <div class="item">
         <div class="label">是否投资</div>
-        <div class="content">{{user.invest_flag}}</div>
+        <div class="content">{{user.investFlag}}</div>
       </div>
     </div>
   </div>
@@ -49,7 +49,6 @@
 
 <script>
 import {mapState} from 'vuex'
-import Cookies from 'js-cookie'
 export default {
   computed: {
     ...mapState({
@@ -58,7 +57,9 @@ export default {
   },
   async mounted () {
     await this.$store.dispatch('user/getUserDetail', {
-      id: Cookies.get('id')
+      id: this.$route.query.id,
+      start: 1,
+      limit: 10
     })
     console.log(this.user)
   }

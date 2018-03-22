@@ -5,12 +5,20 @@ const Login = () => import('./Login')
 const User = () => import('./User')
 const Pm = () => import('./Pm')
 const PmDetails = () => import('./PmDetails')
-const Access = () => import('./Access')
+const Users = () => import('./Users')
 const Dynamic = () => import('./Dynamic')
 const NewDynamic = () => import('./NewDynamic')
 const Records = () => import('./Records')
 
 Vue.use(Router)
+
+// 菜单列表顺序
+const menuOrder = {
+  pm: 1,
+  records: 2,
+  dynamic: 3,
+  users: 4
+}
 
 export default new Router({
   mode: 'history',
@@ -34,13 +42,13 @@ export default new Router({
       meta: { title: '登录', layout: 'blank' }
     },
     {
-      path: '/user',
+      path: '/userdetails',
       name: 'User',
       component: User,
       meta: {
-        title: '个人中心',
+        title: '用户详情',
         breadcrumb: [
-          {path: '/user', title: '个人中心'}
+          {path: '/userdetails', title: '用户详情'}
         ]
       }
     },
@@ -49,7 +57,7 @@ export default new Router({
       name: 'Pm',
       component: Pm,
       meta: {
-        menu: 2,
+        menu: menuOrder.pm,
         type: 'ios-list-outline',
         title: '产品中心',
         breadcrumb: [
@@ -70,15 +78,15 @@ export default new Router({
       }
     },
     {
-      path: '/access',
-      name: 'Access',
-      component: Access,
+      path: '/users',
+      name: 'Users',
+      component: Users,
       meta: {
-        menu: 3,
+        menu: menuOrder.users,
         type: 'ribbon-b',
         title: '用户列表',
         breadcrumb: [
-          {path: '/access', title: '用户列表'}
+          {path: '/users', title: '用户列表'}
         ]
       }
     },
@@ -87,7 +95,7 @@ export default new Router({
       name: 'Dynamic',
       component: Dynamic,
       meta: {
-        menu: 4,
+        menu: menuOrder.dynamic,
         type: 'social-designernews-outline',
         title: '新闻动态',
         breadcrumb: [
@@ -112,7 +120,7 @@ export default new Router({
       name: 'Records',
       component: Records,
       meta: {
-        menu: 5,
+        menu: menuOrder.records,
         type: 'clipboard',
         title: '投资记录',
         breadcrumb: [

@@ -2,7 +2,7 @@
   <div class="dynamic">
     <Row :gutter="16">
       <iCol :span="24">
-        <Button type="primary" @click="$router.push({name: 'NewDynamic'})">添加新新闻</Button>
+       <Button type="primary" icon="plus" shape="circle" @click="$router.push({name: 'NewDynamic'})">新建</Button>
       </iCol>
     </Row>
   </div>
@@ -24,5 +24,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
+.dynamic {
+  padding: 15px;
+}
 </style>

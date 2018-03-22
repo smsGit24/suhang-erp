@@ -2,6 +2,10 @@
   <div class="access">
     <Card v-for="(item, index) in userList" :key="index" :class="{last: (index + 1) % 4 === 0}">
       <p slot="title">id: {{item.id}}</p>
+      <a slot="extra" @click.prevent="$router.push({path: '/userdetails', query: {id: item.id}})">
+        <Icon type="ios-loop-strong"></Icon>
+        查看详情
+      </a>
       <div class="item">
         <div class="item-name">手机号: </div>
         <div class="item-value">{{item.mobile}}</div>
@@ -70,6 +74,7 @@ export default {
     margin: 0 10px 10px 0;
     .item {
       display: flex;
+      margin-bottom: 10px;
       .item-name {
         flex: 1;
       }

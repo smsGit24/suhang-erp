@@ -15,7 +15,7 @@
         </transition>
       </iCol>
     </Row>
-    <Row :gutter="16" class="container">
+    <Row :gutter="16" class="container" style="padding: 0 15px;">
       <iCol :span="24">
         <Table :loading="loading" :columns="columns" :data="records.list" no-data-text="暂时无产品！"/>
       </iCol>

@@ -29,7 +29,7 @@
               </div>
             </div>
             <DropdownMenu slot="list">
-              <DropdownItem name="user">个人中心</DropdownItem>
+              <!-- <DropdownItem name="user">个人中心</DropdownItem> -->
               <DropdownItem name="logout">退出登录</DropdownItem>
             </DropdownMenu>
           </Dropdown>

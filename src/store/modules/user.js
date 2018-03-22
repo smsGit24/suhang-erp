@@ -53,7 +53,8 @@ const user = {
       const res = await ctx.dispatch('get', {url: '/users', params})
       const data = (res || []).map(item => ({
         ...item,
-        createOn: moment(item.create_time).format('YYYY-MM-DD HH:mm')
+        createOn: moment(item.create_time).format('YYYY-MM-DD HH:mm'),
+        total_amount: item.total_amount ? `${item.total_amount} 元` : item.total_amount
       }))
       if (res) ctx.commit('user/setUsers', data)
     },
@@ -63,8 +64,16 @@ const user = {
      * @return []
      */
     async getUserDetail (ctx, params) {
-      const res = await ctx.dispatch('get', {url: '/users', params})
-      if (res) ctx.commit('user/setUserDetail', res)
+      const res = await ctx.dispatch('get', {url: `/users/${params.id}`})
+      const data = {
+        ...res,
+        investFlag: res.invest_flag ? '是' : '否',
+        createTime: moment(res.create_time).format('YYYY-MM-DD HH:mm'),
+        total_amount: res.total_amount ? `${res.total_amount} 元` : res.total_amount,
+        total_profile: res.total_profile ? `${res.total_profile} 元` : res.total_profile,
+        remain_amount: res.remain_amount ? `${res.remain_amount} 元` : res.remain_amount
+      }
+      if (res) ctx.commit('user/setUserDetail', data)
     }
   }
 }
