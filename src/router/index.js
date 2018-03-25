@@ -9,6 +9,8 @@ const Users = () => import('./Users')
 const Dynamic = () => import('./Dynamic')
 const NewDynamic = () => import('./NewDynamic')
 const Records = () => import('./Records')
+const Repayment = () => import('./Repayment')
+const Fund = () => import('./Fund')
 
 Vue.use(Router)
 
@@ -17,7 +19,9 @@ const menuOrder = {
   pm: 1,
   records: 2,
   dynamic: 3,
-  users: 4
+  users: 4,
+  repayment: 5,
+  fund: 6
 }
 
 export default new Router({
@@ -125,6 +129,32 @@ export default new Router({
         title: '投资记录',
         breadcrumb: [
           {path: '/Records', title: '投资记录'}
+        ]
+      }
+    },
+    {
+      path: '/repayment',
+      name: 'Repayment',
+      component: Repayment,
+      meta: {
+        menu: menuOrder.repayment,
+        type: 'clipboard',
+        title: '还款记录',
+        breadcrumb: [
+          {path: '/Repayment', title: '还款记录'}
+        ]
+      }
+    },
+    {
+      path: '/fund',
+      name: 'Fund',
+      component: Fund,
+      meta: {
+        menu: menuOrder.fund,
+        type: 'clipboard',
+        title: '资金流水',
+        breadcrumb: [
+          {path: '/Fund', title: '资金流水'}
         ]
       }
     }

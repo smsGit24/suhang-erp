@@ -57,7 +57,7 @@ export default {
   },
   computed: {
     ...mapState({
-      records: state => state.products.records
+      records: state => state.records.records
     })
   },
   methods: {
@@ -79,7 +79,7 @@ export default {
         limit // 是 int 页大小
       }
       console.log(res)
-      await this.$store.dispatch('products/getRecords', res)
+      await this.$store.dispatch('records/getRecords', res)
       console.log(this.records)
       this.loading = false
     },

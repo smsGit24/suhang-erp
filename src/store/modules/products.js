@@ -14,8 +14,7 @@ const products = {
     products: {},
     delProducts: null,
     productDetails: null,
-    auditProducts: null,
-    records: {}
+    auditProducts: null
   },
   mutations: {
     setCreateProducts (state, val) {
@@ -32,9 +31,6 @@ const products = {
     },
     setAuditProducts (state, val) {
       state.auditProducts = val
-    },
-    setRecords (state, val) {
-      state.records = val
     }
   },
   actions: {
@@ -150,41 +146,6 @@ const products = {
       const res = await ctx.dispatch('put', {url: `/products/audit/${params.id}`})
       if (res === 'success') ctx.commit('products/setAuditProducts', true)
       else ctx.commit('products/setAuditProducts', false)
-    },
-    /**
-     * @method getRecords 获取投资记录列表接口
-     * @param {any} uid 否 int 用户id
-     * @param {any} productId 否 int 产品id
-     * @param {any} mobile 否 String 手机号
-     * @param {any} name 否 String 产品名称
-     * @param {any} status 否 int 产品状态
-     * @param {any} startTime 否 date 开始日期
-     * @param {any} endTime 否 date 结束日期
-     * @param {any} start 是 int 开始页数
-     * @param {any} limit 是 int 页大小
-     * @returns [{
-         "uid": 5, //用户id
-         "amount": 100, //投资金额
-         "period": 180, //产品期限
-         "create_time": 1518860523000, //投资时间
-         "product_id": 3, //产品id
-         "mobile": "18500519083", //手机号
-         "name": "test1", //产品名称
-         "status": 3 //产品状态
-       }]
-     */
-    async getRecords (ctx, params) {
-      const res = await ctx.dispatch('get', {url: `/records`, params})
-      const data = {
-        count: res.count,
-        list: (res.list || []).map(item => ({
-          ...item,
-          createOn: moment(item.create_time).format('YYYY-MM-DD HH:mm'),
-          statusLable: status[item.status]
-        }))
-      }
-      if (res) ctx.commit('products/setRecords', data)
-      else ctx.commit('products/setRecords', false)
     }
   }
 }

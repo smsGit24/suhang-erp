@@ -4,6 +4,7 @@ import {createStore, preModule} from '../utils/preModule'
 import {get, post, put, del} from '../utils/axiosProxy'
 import user from './modules/user'
 import products from './modules/products'
+import records from './modules/records'
 
 const opt = {
   state: {
@@ -49,7 +50,8 @@ const opt = {
   },
   modules: {
     user,
-    products
+    products,
+    records
   }
 }
 

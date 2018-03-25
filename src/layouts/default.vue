@@ -1,26 +1,17 @@
 <template lang="html">
   <div class="default">
     <Layout :style="{minHeight: '100vh'}">
-      <Sider ref="side" hide-trigger collapsible :width="180" :collapsed-width="50" v-model="isCollapsed">
-        <Menu :active-name="$route.name" theme="dark" width="auto" :class="menuitemClasses" @on-select="pageRouter">
-          <MenuItem v-for="(item, index) in routes" :key="index" :name="item.name">
-            <Icon :type="item.meta.type"></Icon>
-            <span>{{item.meta.title}}</span>
-          </MenuItem>
-        </Menu>
-      </Sider>
-      <Layout>
-        <Header :style="{height: '42px', background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)', padding: '0', display: 'flex'}">
-          <div class="nav-btn" style="height: 100%; width: 42px; overflow: hidden;">
-            <Icon @click.native="collapsedSider" :class="rotateIcon" type="navicon" size="24" ></Icon>
-          </div>
-          <Breadcrumb :style="{flex: 1, lineHeight: '42px'}">
-            <BreadcrumbItem>苏商</BreadcrumbItem>
-            <BreadcrumbItem v-for="(item, index) in breadcrumb" :to="breadcrumbPath(index)" :key="index">
-              {{item.title}}
-            </BreadcrumbItem>
-          </Breadcrumb>
-          <Dropdown class="default-ivu-dropdown" trigger="click" placement="bottom-end" style="margin-right: 20px" @on-click="logout">
+      <!-- <Sider ref="side" hide-trigger collapsible :width="180" :collapsed-width="50" v-model="isCollapsed">
+      </Sider> -->
+      <Affix :offset-top="100" @on-change="change">
+        <div class="affix-layout">
+          <Menu mode="horizontal" :active-name="$route.name" theme="dark" width="auto" :class="menuitemClasses" @on-select="pageRouter">
+            <MenuItem v-for="(item, index) in routes" :key="index" :name="item.name">
+              <Icon :type="item.meta.type"></Icon>
+              <span>{{item.meta.title}}</span>
+            </MenuItem>
+          </Menu>
+          <Dropdown class="default-ivu-dropdown" trigger="click" placement="bottom-end" @on-click="logout">
             <div class="user" style="height: 100%;">
               <Avatar class="avatar" src="https://i.loli.net/2017/08/21/599a521472424.jpg" />
               <div class="userName">
@@ -33,6 +24,19 @@
               <DropdownItem name="logout">退出登录</DropdownItem>
             </DropdownMenu>
           </Dropdown>
+        </div>
+      </Affix>
+      <Layout>
+        <Header :style="{height: '42px', background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)', padding: '0', display: 'flex'}">
+          <div class="nav-btn" style="height: 100%; width: 42px; overflow: hidden;">
+            <Icon @click.native="collapsedSider" :class="rotateIcon" type="navicon" size="24" ></Icon>
+          </div>
+          <Breadcrumb :style="{flex: 1, lineHeight: '42px'}">
+            <BreadcrumbItem>苏商</BreadcrumbItem>
+            <BreadcrumbItem v-for="(item, index) in breadcrumb" :to="breadcrumbPath(index)" :key="index">
+              {{item.title}}
+            </BreadcrumbItem>
+          </Breadcrumb>
         </Header>
         <Content :style="{flex: 1, padding: '10px'}">
           <transition name="bounce">
@@ -47,9 +51,9 @@
 <script>
 import {mapState} from 'vuex'
 import Cookies from 'js-cookie'
-import { Layout, Sider, Header, Content, Breadcrumb, BreadcrumbItem, Card, Menu, MenuItem, Icon, MenuGroup, Submenu, Dropdown, DropdownMenu, DropdownItem, Avatar } from 'iview'
+import { Layout, Sider, Header, Affix, Content, Breadcrumb, BreadcrumbItem, Card, Menu, MenuItem, Icon, MenuGroup, Submenu, Dropdown, DropdownMenu, DropdownItem, Avatar } from 'iview'
 export default {
-  components: { Layout, Sider, Header, Content, Breadcrumb, BreadcrumbItem, Card, Menu, MenuItem, Icon, MenuGroup, Submenu, Dropdown, DropdownMenu, DropdownItem, Avatar },
+  components: { Layout, Sider, Header, Affix, Content, Breadcrumb, BreadcrumbItem, Card, Menu, MenuItem, Icon, MenuGroup, Submenu, Dropdown, DropdownMenu, DropdownItem, Avatar },
   data () {
     return {
       isCollapsed: false,
@@ -76,6 +80,9 @@ export default {
     }
   },
   methods: {
+    change (v) {
+      console.log(v)
+    },
     pageRouter (active) {
       this.$router.push({
         name: active
@@ -127,6 +134,12 @@ export default {
   transition: font-size 0.2s ease, transform 0.2s ease;
   vertical-align: middle;
   font-size: 16px;
+}
+.affix-layout {
+  display: flex;
+  .menu-item {
+    flex: 1;
+  }
 }
 .collapsed-menu span {
   width: 0px;
@@ -185,14 +198,17 @@ export default {
   }
 }
 .default-ivu-dropdown {
+  padding-right: 20px;
+  background: #011528;
   .user {
     display: flex;
     .avatar {
-      margin-top: 5px;
-      margin-right: 4px;
+      margin-top: 14px;
+      margin-right: 6px;
     }
     .userName {
-      line-height: 42px;
+      line-height: 60px;
+      color: #ffffff;
     }
   }
   .ivu-dropdown-rel {
