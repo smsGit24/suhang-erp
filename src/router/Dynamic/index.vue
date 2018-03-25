@@ -25,6 +25,7 @@ export default {
 
 <style lang="less" scoped>
 .dynamic {
+  flex: 1;
   padding: 15px;
 }
 </style>

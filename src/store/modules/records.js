@@ -9,7 +9,8 @@ const records = {
   state: {
     records: {},
     todayRecords: {},
-    funds: {}
+    funds: {},
+    repay: null
   },
   mutations: {
     setRecords (state, val) {
@@ -20,6 +21,9 @@ const records = {
     },
     setFund (state, val) {
       state.funds = val
+    },
+    setRepay (state, val) {
+      state.repay = val
     }
   },
   actions: {
@@ -117,6 +121,15 @@ const records = {
       }
       if (res) ctx.commit('records/setFund', data)
       else ctx.commit('records/setFund', false)
+    },
+    /**
+     * @method repay 还款
+     * @param {any} status 否 int 状态 0-处理中，1-处理完成，2-处理失败
+     */
+    async repay (ctx, params) {
+      const res = await ctx.dispatch('put', {url: `/records/repay`})
+      if (res === 'success') ctx.commit('records/setRepay', true)
+      else ctx.commit('records/setRepay', false)
     }
   }
 }

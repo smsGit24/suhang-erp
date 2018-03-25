@@ -143,12 +143,8 @@ export default {
 
 <style lang="less" scoped>
 .pm {
-  // display: flex;
-  // flex-direction: column;
+  flex: 1;
   position: relative;
-  // .container {
-  //   flex: 1
-  // }
   .shadow {
     display: inline-block;
     padding: 0 20px;

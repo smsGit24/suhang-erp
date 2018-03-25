@@ -1,5 +1,5 @@
 <template>
-  <div class="pm">
+  <div class="records">
     <Row :gutter="16" class="header">
       <iCol :span="24" style="padding: 15px 20px;">
         <Button type="dashed" shape="circle" :loading="false" icon="ios-search" @click="() => showFilters = !showFilters">筛选</Button>
@@ -103,13 +103,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.pm {
-  // display: flex;
-  // flex-direction: column;
+.records {
+  flex: 1;
   position: relative;
-  // .container {
-  //   flex: 1
-  // }
   .shadow {
     display: inline-block;
     padding: 0 20px;

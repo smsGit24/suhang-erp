@@ -44,7 +44,10 @@ export default {
     async fetchFunds () {
       const {status, type, start, limit, times} = this.filters
       await this.$store.dispatch('records/getFund', {
-        status, type, start, limit,
+        status,
+        type,
+        start,
+        limit,
         startTime: times[0] ? moment(times[0]).format('YYYY-MM-DD HH:mm:ss') : times[0],
         endTime: times[1] ? moment(times[1]).format('YYYY-MM-DD HH:mm:ss') : times[1]
       })
@@ -68,6 +71,7 @@ export default {
 
 <style lang="less" scoped>
 .repayment {
+  flex: 1;
   padding: 15px;
   .filter {
     padding-bottom: 15px;

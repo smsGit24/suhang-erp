@@ -85,6 +85,7 @@ export default {
 
 <style lang="less" scoped>
 .editor {
+  flex: 1;
   padding: 15px;
   .main {
     .header {

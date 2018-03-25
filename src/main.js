@@ -7,7 +7,7 @@ import store from './store'
 import router from './router'
 
 import Cookies from 'js-cookie'
-import { Modal, Message, LoadingBar } from 'iview'
+import { Modal, Message, Notice, LoadingBar } from 'iview'
 
 import './theme/index.less'
 
@@ -17,6 +17,11 @@ Vue.prototype.$message = Message
 Vue.prototype.$message.config({
   top: 10,
   duration: 2
+})
+Vue.prototype.$notice = Notice
+Vue.prototype.$notice.config({
+  top: 50,
+  duration: 3
 })
 
 Vue.config.productionTip = false

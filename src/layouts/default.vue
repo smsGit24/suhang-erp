@@ -3,29 +3,27 @@
     <Layout :style="{minHeight: '100vh'}">
       <!-- <Sider ref="side" hide-trigger collapsible :width="180" :collapsed-width="50" v-model="isCollapsed">
       </Sider> -->
-      <Affix :offset-top="100" @on-change="change">
-        <div class="affix-layout">
-          <Menu mode="horizontal" :active-name="$route.name" theme="dark" width="auto" :class="menuitemClasses" @on-select="pageRouter">
-            <MenuItem v-for="(item, index) in routes" :key="index" :name="item.name">
-              <Icon :type="item.meta.type"></Icon>
-              <span>{{item.meta.title}}</span>
-            </MenuItem>
-          </Menu>
-          <Dropdown class="default-ivu-dropdown" trigger="click" placement="bottom-end" @on-click="logout">
-            <div class="user" style="height: 100%;">
-              <Avatar class="avatar" src="https://i.loli.net/2017/08/21/599a521472424.jpg" />
-              <div class="userName">
-                <span>{{id}}</span>
-                <Icon style="font-size: 12px;" type="chevron-down"></Icon>
-              </div>
+      <div class="affix-layout">
+        <Menu mode="horizontal" :active-name="$route.name" theme="dark" width="auto" :class="menuitemClasses" @on-select="pageRouter">
+          <MenuItem v-for="(item, index) in routes" :key="index" :name="item.name">
+            <Icon :type="item.meta.type"></Icon>
+            <span>{{item.meta.title}}</span>
+          </MenuItem>
+        </Menu>
+        <Dropdown class="default-ivu-dropdown" trigger="click" placement="bottom-end" @on-click="logout">
+          <div class="user" style="height: 100%;">
+            <Avatar class="avatar" src="https://i.loli.net/2017/08/21/599a521472424.jpg" />
+            <div class="userName">
+              <span>{{id}}</span>
+              <Icon style="font-size: 12px;" type="chevron-down"></Icon>
             </div>
-            <DropdownMenu slot="list">
-              <!-- <DropdownItem name="user">个人中心</DropdownItem> -->
-              <DropdownItem name="logout">退出登录</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        </div>
-      </Affix>
+          </div>
+          <DropdownMenu slot="list">
+            <!-- <DropdownItem name="user">个人中心</DropdownItem> -->
+            <DropdownItem name="logout">退出登录</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      </div>
       <Layout>
         <Header :style="{height: '42px', background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)', padding: '0', display: 'flex'}">
           <div class="nav-btn" style="height: 100%; width: 42px; overflow: hidden;">
@@ -38,7 +36,7 @@
             </BreadcrumbItem>
           </Breadcrumb>
         </Header>
-        <Content :style="{flex: 1, padding: '10px'}">
+        <Content :style="{display: 'flex', flexDirection: 'column', flex: 1, padding: '10px'}">
           <transition name="bounce">
             <router-view style="background: #ffffff; height: 100%;" class="page"/>
           </transition>
@@ -80,9 +78,6 @@ export default {
     }
   },
   methods: {
-    change (v) {
-      console.log(v)
-    },
     pageRouter (active) {
       this.$router.push({
         name: active

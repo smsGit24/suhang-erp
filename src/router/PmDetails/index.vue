@@ -101,6 +101,7 @@ export default {
 
 <style lang="less" scoped>
 .pm-details {
+  flex: 1;
   padding: 20px;
   .item {
     display: inline-block;

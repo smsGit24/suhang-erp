@@ -69,6 +69,7 @@ export default {
 <style lang="less" scoped>
 .user {
   display: flex;
+  flex: 1;
   padding: 20px;
   .plane {
     flex: 1;
