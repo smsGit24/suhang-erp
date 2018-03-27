@@ -8,9 +8,12 @@ const PmDetails = () => import('./PmDetails')
 const Users = () => import('./Users')
 const Dynamic = () => import('./Dynamic')
 const NewDynamic = () => import('./NewDynamic')
+const EditDynamic = () => import('./EditDynamic')
+const DynamicDetails = () => import('./DynamicDetails')
 const Records = () => import('./Records')
 const Repayment = () => import('./Repayment')
 const Fund = () => import('./Fund')
+const App = () => import('./App')
 
 Vue.use(Router)
 
@@ -18,10 +21,11 @@ Vue.use(Router)
 const menuOrder = {
   pm: 1,
   records: 2,
-  dynamic: 3,
-  users: 4,
-  repayment: 5,
-  fund: 6
+  repayment: 3,
+  fund: 4,
+  dynamic: 5,
+  conf: 6,
+  users: 7
 }
 
 export default new Router({
@@ -31,19 +35,31 @@ export default new Router({
       path: '/',
       name: 'Login',
       component: Login,
-      meta: { title: '登录', layout: 'blank' }
+      meta: {
+        title: '登录',
+        layout: 'blank',
+        access: ['manager', 'user']
+      }
     },
     {
       path: '/signin',
       name: 'Signin',
       component: Signin,
-      meta: { title: '注册', layout: 'blank' }
+      meta: {
+        title: '注册',
+        layout: 'blank',
+        access: ['manager', 'user']
+      }
     },
     {
       path: '/login',
       name: 'Login',
       component: Login,
-      meta: { title: '登录', layout: 'blank' }
+      meta: {
+        title: '登录',
+        layout: 'blank',
+        access: ['manager', 'user']
+      }
     },
     {
       path: '/userdetails',
@@ -53,7 +69,8 @@ export default new Router({
         title: '用户详情',
         breadcrumb: [
           {path: '/userdetails', title: '用户详情'}
-        ]
+        ],
+        access: ['manager', 'user']
       }
     },
     {
@@ -66,7 +83,8 @@ export default new Router({
         title: '产品中心',
         breadcrumb: [
           {path: '/pm', title: '产品中心'}
-        ]
+        ],
+        access: ['manager', 'user']
       }
     },
     {
@@ -78,7 +96,8 @@ export default new Router({
         breadcrumb: [
           {path: '/pm', title: '产品中心'},
           {path: '/pmdetails', title: '产品详情'}
-        ]
+        ],
+        access: ['manager', 'user']
       }
     },
     {
@@ -91,7 +110,8 @@ export default new Router({
         title: '用户列表',
         breadcrumb: [
           {path: '/users', title: '用户列表'}
-        ]
+        ],
+        access: ['manager']
       }
     },
     {
@@ -101,10 +121,11 @@ export default new Router({
       meta: {
         menu: menuOrder.dynamic,
         type: 'social-designernews-outline',
-        title: '新闻动态',
+        title: '动态列表',
         breadcrumb: [
-          {path: '/dynamic', title: '新闻动态'}
-        ]
+          {path: '/dynamic', title: '动态列表'}
+        ],
+        access: ['manager']
       }
     },
     {
@@ -112,11 +133,38 @@ export default new Router({
       name: 'NewDynamic',
       component: NewDynamic,
       meta: {
-        title: '添加新闻',
+        title: '添加文章',
         breadcrumb: [
-          {path: '/dynamic', title: '新闻动态'},
-          {path: '/newdynamic', title: '添加新闻'}
-        ]
+          {path: '/dynamic', title: '动态列表'},
+          {path: '/newdynamic', title: '添加文章'}
+        ],
+        access: ['manager']
+      }
+    },
+    {
+      path: '/editdynamic',
+      name: 'EditDynamic',
+      component: EditDynamic,
+      meta: {
+        title: '编辑文章',
+        breadcrumb: [
+          {path: '/dynamic', title: '动态列表'},
+          {path: '/editdynamic', title: '编辑文章'}
+        ],
+        access: ['manager']
+      }
+    },
+    {
+      path: '/dynamicdetails',
+      name: 'DynamicDetails',
+      component: DynamicDetails,
+      meta: {
+        title: '文章详情',
+        breadcrumb: [
+          {path: '/dynamic', title: '动态列表'},
+          {path: '/dynamicdetails', title: '文章详情'}
+        ],
+        access: ['manager']
       }
     },
     {
@@ -125,11 +173,12 @@ export default new Router({
       component: Records,
       meta: {
         menu: menuOrder.records,
-        type: 'clipboard',
+        type: 'ios-recording-outline',
         title: '投资记录',
         breadcrumb: [
-          {path: '/Records', title: '投资记录'}
-        ]
+          {path: '/records', title: '投资记录'}
+        ],
+        access: ['manager', 'user']
       }
     },
     {
@@ -141,8 +190,9 @@ export default new Router({
         type: 'clipboard',
         title: '还款记录',
         breadcrumb: [
-          {path: '/Repayment', title: '还款记录'}
-        ]
+          {path: '/repayment', title: '还款记录'}
+        ],
+        access: ['manager', 'user']
       }
     },
     {
@@ -151,11 +201,26 @@ export default new Router({
       component: Fund,
       meta: {
         menu: menuOrder.fund,
-        type: 'clipboard',
+        type: 'ios-book-outline',
         title: '资金流水',
         breadcrumb: [
-          {path: '/Fund', title: '资金流水'}
-        ]
+          {path: '/fund', title: '资金流水'}
+        ],
+        access: ['manager', 'user']
+      }
+    },
+    {
+      path: '/conf',
+      name: 'App',
+      component: App,
+      meta: {
+        menu: menuOrder.conf,
+        type: 'ios-gear-outline',
+        title: 'App配置',
+        breadcrumb: [
+          {path: '/conf', title: 'App配置'}
+        ],
+        access: ['manager']
       }
     }
   ]

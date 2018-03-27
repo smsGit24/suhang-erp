@@ -5,6 +5,7 @@ import {get, post, put, del} from '../utils/axiosProxy'
 import user from './modules/user'
 import products from './modules/products'
 import records from './modules/records'
+import news from './modules/news'
 
 const opt = {
   state: {
@@ -51,7 +52,8 @@ const opt = {
   modules: {
     user,
     products,
-    records
+    records,
+    news
   }
 }
 

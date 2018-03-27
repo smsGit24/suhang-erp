@@ -25,8 +25,8 @@
       <div class="item image">
         <div class="label">文章缩略图</div>
         <div class="content">
-          <div v-if="image" class="img-wrap" style="width: 400px;">
-            <img :src="image" alt="" style="width: 100%;">
+          <div v-if="image" class="img-wrap">
+            <img :src="image" alt="">
           </div>
           <div v-if="progress && !image" class="img-progress">
             <Progress :percent="progress"></Progress>
@@ -65,7 +65,7 @@
     </div>
     <div class="btn-wrap">
       <Button class="cancel" type="warning" @click="cancel" style="width: 80px;">取消</Button>
-      <Button type="primary" @click="create" style="width: 100px;">保存</Button>
+      <Button type="primary" @click="save" style="width: 100px;">保存</Button>
     </div>
   </div>
 </template>
@@ -85,9 +85,9 @@ export default {
   data () {
     return {
       token: Cookies.get('token') || '',
-      type: 0,
+      type: null,
       title: '',
-      image: 'http://47.97.113.61:8087/news/img/1f6ae74c529ffa.png',
+      image: '',
       content: '',
       progress: 0,
       editorOption: {
@@ -115,13 +115,22 @@ export default {
   },
   computed: {
     ...mapState({
-      createNewsResult: state => state.news.createNewsResult
+      newsDetails: state => state.news.newsDetails
     }),
     editor () {
       return this.$refs.editor.quill
     }
   },
   methods: {
+    async setDefault () {
+      await this.$store.dispatch('news/fetchNewsDetails', {
+        id: this.$route.query.id
+      })
+      this.type = Number(this.newsDetails.type)
+      this.title = this.newsDetails.title
+      this.image = this.newsDetails.image
+      this.content = this.newsDetails.content
+    },
     setTitle (ev) {
       this.title = ev.target.value
     },
@@ -139,15 +148,15 @@ export default {
     },
     // 编辑器
     setImageBtn () {
-      console.log(this.editor)
       const toolbar = this.editor.getModule('toolbar')
       toolbar.addHandler('image', this.customImageHandler)
     },
     customImageHandler () {
-      console.log('aa')
       this.$refs.fileInput.click()
     },
     changeEditore (editor) {
+      // console.log(editor)
+      // this.content = editor.html
       console.log(this.content)
     },
     async emitImageInfo ($event) {
@@ -158,13 +167,14 @@ export default {
       console.log('imageAdded', file, Editor, cursorLocation)
 
       const url = await this.uploadImage(file)
+
       this.editor.insertEmbed(cursorLocation, 'image', url)
     },
     async uploadImage (file) {
       const formData = new FormData()
       formData.append('img', file)
 
-      const res = await this.$axios.post('http://47.97.113.61:8087/news/image', formData, {
+      const res = this.$axios.post('http://47.97.113.61:8087/news/image', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -175,23 +185,19 @@ export default {
     cancel () {
       this.$router.history.go(-1)
     },
-    async create () {
-      const {image, type, title, content} = this
-      await this.$store.dispatch('news/createNews', {
-        type,
-        image: '1.png',
-        title,
-        content
+    async save () {
+      await this.$store.dispatch('news/alterNews', {
+        id: Number(this.$route.query.id),
+        image: this.image,
+        type: this.type,
+        title: this.title,
+        content: this.content
       })
-      if (this.createNewsResult) {
-        this.$message.success('新建成功!')
-      } else {
-        this.$message.error('新建失败!')
-      }
     }
   },
-  mounted () {
+  async mounted () {
     this.setImageBtn()
+    await this.setDefault()
   }
 }
 </script>

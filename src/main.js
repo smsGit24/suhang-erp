@@ -5,6 +5,7 @@ import Vuex from 'vuex'
 
 import store from './store'
 import router from './router'
+import axios from 'axios'
 
 import Cookies from 'js-cookie'
 import { Modal, Message, Notice, LoadingBar } from 'iview'
@@ -12,6 +13,7 @@ import { Modal, Message, Notice, LoadingBar } from 'iview'
 import './theme/index.less'
 
 import App from './App'
+Vue.prototype.$axios = axios
 Vue.prototype.$Modal = Modal
 Vue.prototype.$message = Message
 Vue.prototype.$message.config({

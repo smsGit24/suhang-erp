@@ -1,8 +1,6 @@
 <template lang="html">
   <div class="default">
     <Layout :style="{minHeight: '100vh'}">
-      <!-- <Sider ref="side" hide-trigger collapsible :width="180" :collapsed-width="50" v-model="isCollapsed">
-      </Sider> -->
       <div class="affix-layout">
         <Menu mode="horizontal" :active-name="$route.name" theme="dark" width="auto" :class="menuitemClasses" @on-select="pageRouter">
           <MenuItem v-for="(item, index) in routes" :key="index" :name="item.name">
@@ -72,7 +70,8 @@ export default {
       ]
     },
     routes () {
-      const routes = this.$router.options.routes.filter(({meta}) => meta.menu)
+      const access = Cookies.get('token')
+      const routes = this.$router.options.routes.filter(({meta}) => (meta.menu && meta.access.includes(access)))
       routes.sort((a, b) => a.meta.menu - b.meta.menu)
       return routes
     }

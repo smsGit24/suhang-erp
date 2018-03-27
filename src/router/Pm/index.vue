@@ -2,7 +2,7 @@
   <div class="pm">
     <Row :gutter="16" class="header">
       <iCol :span="24" style="padding: 15px 20px;">
-        <Add style="display: inline-block; margin-right: 10px;" @get="fetchProducts"/>
+        <Add v-if="access === 'manager'" style="display: inline-block; margin-right: 10px;" @get="fetchProducts"/>
         <Button type="dashed" shape="circle" :loading="false" icon="ios-search" @click="() => showFilters = !showFilters">筛选</Button>
         <transition name="filters">
           <div v-if="showFilters" class="shadow">
@@ -32,10 +32,12 @@ import {mapState} from 'vuex'
 import {Row, Col, Table, Button, Input, Select, Option, DatePicker, Page} from 'iview'
 import Add from '@/components/Add.vue'
 import opts from './colums'
+import Cookies from 'js-cookie'
 export default {
   components: {'iCol': Col, Row, Table, Button, Input, Add, Select, Option, DatePicker, Page},
   data () {
     return {
+      access: Cookies.get('token'),
       showFilters: false,
       filters: {
         code: null,
@@ -63,22 +65,32 @@ export default {
   },
   methods: {
     actionRender (h, params) {
-      return h('div', [
-        h(Button, {
-          props: { type: 'primary', size: 'small' },
-          style: { marginRight: '5px' },
-          on: { click: () => this.showDetails(params.row.id) }
-        }, '详情'),
-        h(Button, {
-          props: { type: 'warning', size: 'small' },
-          style: { marginRight: '5px', display: params.row.status === 1 ? 'inline-block' : 'none' },
-          on: { click: () => this.auditProducts(params.row.id) }
-        }, '审核'),
-        h(Button, {
-          props: { type: 'error', size: 'small' },
-          on: { click: () => this.deleteProducts(params.row.id) }
-        }, '删除')
-      ])
+      if (this.access === 'manager') {
+        return h('div', [
+          h(Button, {
+            props: { type: 'default', size: 'small' },
+            style: { marginRight: '5px' },
+            on: { click: () => this.showDetails(params.row.id) }
+          }, '详情'),
+          h(Button, {
+            props: { type: 'warning', size: 'small' },
+            style: { marginRight: '5px', display: params.row.status === 1 ? 'inline-block' : 'none' },
+            on: { click: () => this.auditProducts(params.row.id) }
+          }, '审核'),
+          h(Button, {
+            props: { type: 'error', size: 'small' },
+            on: { click: () => this.deleteProducts(params.row.id) }
+          }, '删除')
+        ])
+      } else {
+        return h('div', [
+          h(Button, {
+            props: { type: 'default', size: 'small' },
+            style: { marginRight: '5px' },
+            on: { click: () => this.showDetails(params.row.id) }
+          }, '详情')
+        ])
+      }
     },
     async searchProducts (ev) {
       console.log(ev)

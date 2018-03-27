@@ -44,6 +44,7 @@ const createAxios = function (opts) {
   })
   instance.interceptors.request.use(
     req => {
+      console.log(req)
       const token = Cookie.get('token') || ''
       if (token) {
         req.headers['X-AUTH-TOKEN'] = token
