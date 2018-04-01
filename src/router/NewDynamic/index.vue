@@ -87,7 +87,8 @@ export default {
       token: Cookies.get('token') || '',
       type: 0,
       title: '',
-      image: 'http://47.97.113.61:8087/news/img/1f6ae74c529ffa.png',
+      image: '',
+      // image: 'http://47.97.113.61:8087/news/img/1f6ae74c529ffa.png',
       content: '',
       progress: 0,
       editorOption: {
@@ -179,7 +180,7 @@ export default {
       const {image, type, title, content} = this
       await this.$store.dispatch('news/createNews', {
         type,
-        image: '1.png',
+        image: 'http://suahng.com/news/img/1f6ae74c529ffa.png',
         title,
         content
       })
